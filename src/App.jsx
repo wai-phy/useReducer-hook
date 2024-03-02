@@ -1,35 +1,40 @@
-import { useReducer } from "react";
+import { useEffect, useState } from "react";
 
-const firstReducer = (state, action) => {
-  switch (action.type) {
-    case "minus":
-      return { ...state, count: state.count - 1 };
-
-    case "plus":
-      return { ...state, count: state.count + 1 };
-    case "updateKey":
-      return { ...state, key: action.payload };
-    default:
-      throw new Error();
-  }
-};
 function App() {
-  const [state, dispatch] = useReducer(firstReducer, { count: 0, key: "" });
-  // const [key, setKey] = useState("");
-  // const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState([]);
+  useEffect((_) => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const response = await fetch("https://jsonplaceholder.typicode.com/todos/");
+    const data = await response.json();
+    setTodos(data);
+  };
   return (
-    <div className="App">
-      <input
-        type="text"
-        onChange={(e) =>
-          dispatch({ type: "updateKey", payload: e.target.value })
-        }
-      />
-      <h1>Your Key is - {state.key} </h1>
-      <button onClick={() => dispatch({ type: "plus" })}>+</button>
-      <span>{state.count}</span>
-      <button onClick={() => dispatch({ type: "minus" })}>-</button>
-    </div>
+    <section>
+      <h1>Hello World</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            {/* <th>User ID</th> */}
+            <th>Title</th>
+            <th>Completed</th>
+          </tr>
+        </thead>
+        <tbody>
+          {todos.map((todo) => (
+            <tr key={todo.id}>
+              <td>{todo.id}</td>
+              {/* <td>{todo.userId}</td> */}
+              <td>{todo.title}</td>
+              <td>{todo.completed ? (<p>Completed</p>) : (<p className="false">Incompleted</p>)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
   );
 }
 

@@ -19,3 +19,10 @@ button{
   margin:10px 10px;
 
 }
+
+p{
+  color: rgb(25, 235, 25);
+}
+.false{
+  color: red;
+}
